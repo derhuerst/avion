@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+
+<html lang="de">
+	<head>
+		<meta charset="utf-8">
+
+		<title>avion – Dateien teilen ohne die NSA.</title>
+		<meta name="description" content="Fast and easy file transfer without the NSA.">
+		<meta name="keywords" content="avion, transfer, files, secure, without a server, webrtc, p2p, peer to peer, nsa, rtccopy.com, sharefest, chrome, jannisr">
+		<meta name="author" content="Jannis R">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!-- general css -->
+		<!--<link rel="stylesheet" type="text/css" media="screen" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/base.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/text.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/layout.css">-->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/all.min.css">
+
+		<link rel="stylesheet" type="text/css" media="screen" href="fonts/oleo-script-swash-caps.css">
+		<!-- page-specific css -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/index.min.css">
+
+		<link rel="apple-touch-icon" sizes="57x57" href="img/icon-57.png" type="image/png">
+		<link rel="apple-touch-icon" sizes="72x72" href="img/icon-72.png" type="image/png">
+		<link rel="apple-touch-icon" sizes="76x76" href="img/icon-76.png" type="image/png">
+		<link rel="apple-touch-icon" sizes="114x114" href="img/icon-114.png" type="image/png">
+		<link rel="apple-touch-icon" sizes="120x120" href="img/icon-120.png" type="image/png">
+		<link rel="apple-touch-icon" sizes="144x144" href="img/icon-144.png" type="image/png">
+		<link rel="apple-touch-icon" sizes="152x152" href="img/icon-152.png" type="image/png">
+		<link rel="icon" href="img/icon-transparent.png" type="image/png">
+
+	</head>
+	<body>
+		<div id="main">
+			<h1 id="logo"><a href="/">avion</a></h1>
+			<p id="about" class="section">Dateien senden ohne die NSA. <a href="about.html">Wie das?</a></p>
+			<noscript id="nojs" class="section error">
+				<p>Bitte aktiviere JavaScript.</p>
+			</noscript>
+			<div id="select" class="section">
+				<div id="select-button">
+					<input type="file" value="Dateien auswählen" tabindex="1" multiple autofocus>
+					<label>Dateien auswählen</label>
+				</div>
+				<div id="select-drop">oder hierher ziehen</div>
+			</div>
+			<div id="share" class="section">
+				<p>Verschicke jetzt diesen Link. Denk daran, dass diese Seite offen bleiben muss.</p>
+				<input id="share-input" type="url" value="">
+			</div>
+			<table id="transfer" class="section">
+				<tbody></tbody>
+			</table>
+			<audio id="audio" src="audio/progress.mp3" type="audio/mpeg" preload></audio>
+		</div>
+		<p id="status"></p>
+		<!-- lib -->
+		<script src="lib/zepto/zepto.min.js"></script>
+		<script src="lib/peerjs/peer.min.js"></script>
+		<script src="lib/filesaverjs/FileSaver.min.js"></script>
+		<script src="lib/linkup/linkup.js"></script>
+		<!-- JS -->
+		<script src="js/main.js"></script>
+		<script src="js/status.js"></script>
+		<script src="js/select.js"></script>
+		<script src="js/share.js"></script>
+		<script src="js/transfer.js"></script>
+		<script src="js/audio.js"></script>
+		<script src="js/title.js"></script>
+		<script src="js/beforeunload.js"></script>
+	</body>
+</html>

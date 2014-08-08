@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "avion",
+			"folder_exclude_patterns": [
+				"lib",
+				"css",
+				"js"
+			],
+			"file_exclude_patterns": [
+				"*.sublime-workspace"
+			]
+		},
+		{
+			"path": "./lib",
+			"name": "lib"
+		},
+		{
+			"path": "./css",
+			"name": "css"
+		},
+		{
+			"path": "./js",
+			"name": "js",
+			"file_exclude_patterns": [
+				"*.js"
+			]
+		}
+	],
+	"settings": {
+		"tab_size": 4,
+		"translate_tabs_to_spaces": false
+	}
+}

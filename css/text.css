@@ -1,0 +1,59 @@
+h1{
+	margin-bottom: 0.5em;
+	font-size: 5em;
+	line-height: 1em;
+	text-align: center;
+	font-family: 'Oleo Script Swash Caps', cursive;
+	color: #56B7F8;
+	font-weight: 300;
+}
+
+h2, h3{
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	font-size: 1.25em;
+	line-height: 1em;
+	color: #555;
+	font-weight: 300;
+}
+h2{
+	font-size: 150%;
+}
+h3{
+	font-size: 115%;
+}
+
+p{
+	margin-bottom: 0.5em;
+	text-align: justify;
+}
+p.error{
+	color: #e74c3c;
+}
+
+a{
+	color: #56B7F8;
+	text-decoration: none;
+}
+a:hover{
+	color: #63C4FF;
+}
+
+strong{
+	font-weight: 500;
+}
+
+em{
+	font-style: italic;
+}
+
+blockquote{
+	margin-bottom: 0.5em;
+	padding: 0.3em 0.75em;
+	color: #555;
+	font-style: italic;
+	border-left: 0.2em solid #e0e0e0;
+}
+blockquote > :last-child{
+	margin-bottom: 0;
+}

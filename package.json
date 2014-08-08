@@ -1,0 +1,36 @@
+{
+	"name": "avion",
+	"description": "Fast and easy file transfer without the NSA.",
+	"version": "0.1.0",
+	"keywords": [
+		"avion",
+		"transfer",
+		"files",
+		"secure",
+		"without a server",
+		"webrtc",
+		"p2p",
+		"peer to peer",
+		"nsa",
+		"rtccopy.com",
+		"sharefest",
+		"chrome",
+		"jannisr"
+	],
+	"author": {
+		"name": "Jannis R",
+		"email": "mail@jannisr.de",
+		"url": "http://jannisr.de"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/derhuerst/avion.git"
+	},
+	"license": "BSD-3-Clause",
+	"devDependencies": {
+		"coffee-script":		"^1.7.1"
+	},
+	"scripts": {
+		"build": "coffee -wbc ./js"
+	}
+}

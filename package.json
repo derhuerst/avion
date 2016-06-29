@@ -7,5 +7,17 @@
 	"homepage":    "https://github.com/derhuerst/avion",
 	"repository":  "derhuerst/avion",
 	"issues":      "https://github.com/derhuerst/avion/issues",
-	"license":     "ISC"
+	"license":     "ISC",
+	"devDependencies": {
+		"browserify": "^13.0.1",
+		"uglify-js": "^2.6.4",
+		"wzrd": "^1.4"
+	},
+	"scripts": {
+		"bundle": "browserify avion.js -o bundle.js",
+		"uglify": "uglifyjs -mc --mangle-props --screw-ie8 -o bundle.min.js -- bundle.js",
+		"build": "npm run bundle; npm run uglify",
+		"prepublish": "npm run build",
+		"dev":   "wzrd avion.js:bundle.js -- --debug"
+	}
 }

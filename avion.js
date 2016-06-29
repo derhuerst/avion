@@ -1,17 +1,17 @@
 'use strict'
 
-const peer = require('./peer')
+const peers = require('./peers')
 const ui = require('./ui')
 
 
 
-peer.on('error', (e) => {
+peers.meta.on('error', (e) => {
 	// todo
 })
-peer.on('connect', () => {
-	if (peer.initiator) peer.send('hi')
+peers.meta.on('connect', () => {
+	if (peers.initiator) peers.meta.send('hi')
 	// todo
 })
-peer.on('data', (d) => {
+peers.meta.on('data', (d) => {
 	// todo
 })

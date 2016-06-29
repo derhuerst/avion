@@ -10,7 +10,8 @@
 	"license":     "ISC",
 	"dependencies": {
 		"signalhub": "^4.7.4",
-		"simple-peer": "^6.0.4"
+		"simple-peer": "^6.0.4",
+		"component-emitter": "^0.2"
 	},
 	"devDependencies": {
 		"browserify": "^13.0.1",

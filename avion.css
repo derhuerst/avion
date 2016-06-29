@@ -78,6 +78,8 @@ input{
 }
 #transfer tr:first-child td { padding-top: 0 }
 #transfer tr:last-child td { padding-bottom: 0; border-bottom: none }
+#transfer td:first-child { padding-left: 0 }
+#transfer td:last-child { padding-right: 0 }
 #transfer td+td { padding-left: .5rem }
 
 #transfer td.name { min-width: 12em; color: #444 }

@@ -1,0 +1,99 @@
+body {
+	margin: 2em auto; padding: 0; max-width: 22rem;
+	line-height: 1.35; font-size: 110%;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	color: #333;
+}
+
+h1 { margin: 1rem 0; font-size: 3rem; text-align: center }
+
+p { margin: 1rem 0; text-align: justify }
+a { text-decoration: none; color: #56b7f8 }
+a:hover { color: #63c4ff }
+
+input{
+	width: 100%; padding: 0;
+	font-size: 105%; line-height: 2em;
+	text-align: center;
+	color: #333;
+	background-color: transparent;
+	border: 0;
+}
+
+
+
+.notification {
+	position: fixed; top: 0; left: 0;
+	margin: 0; padding: .5rem; width: 100%;
+	text-align: center; background-color: #eee;
+}
+.notification.error { color: white; background-color: #c0392b }
+
+#logo img { max-width: 12rem }
+#intro { text-align: center }
+
+
+
+#add { margin: 1rem 0 }
+
+#add-select {
+	position: relative; height: 3em; overflow: hidden;
+	font-size: 110%;
+}
+#add-select input,
+#add-select label { position: absolute; top: 0; left: 0; width: 100% }
+#add-select input{
+	z-index: 2;
+	height: 3em; font-size: 100%;
+	opacity: 0; cursor: pointer;
+}
+#add-select label{
+	z-index: 1;
+	line-height: 3em; text-align: center;
+	font-weight: 300;
+	color: white; background-color: #56b7f8;
+}
+#add-select:hover label,
+#add-select:active label { background-color: #63c4ff }
+
+#add-drop {
+	margin-top: .5rem;
+	text-align: center; font-size: 105%; line-height: 3em;
+	color: #505050; background-color: #e3e3e3;
+	cursor: default;
+}
+
+
+
+#link { margin: 1rem 0 }
+#link-input:hover,
+#link-input:active { background-color: #eee }
+
+
+
+#transfer { margin: 1rem 0; width: 100%; border-spacing: 0 }
+#transfer td {
+	padding: .3rem; vertical-align: middle;
+	border-bottom: 1px solid #e0e0e0;
+}
+#transfer tr:first-child td { padding-top: 0 }
+#transfer tr:last-child td { padding-bottom: 0; border-bottom: none }
+#transfer td+td { padding-left: .5rem }
+
+#transfer td.name { min-width: 12em; color: #444 }
+#transfer td.size,
+#transfer td.status {
+	text-align: right; color: #777;
+	font-family: Monaco, Consolas, 'Lucida Console', monospace;
+	font-size: 90%;
+}
+#transfer td.status { min-width: 0.5em }
+
+#transfer          .status { color: #999 }
+#transfer .running .status { color: #56b7f8 }
+#transfer .done    .status { color: #2ecc71 }
+#transfer .failed  .status { color: #e74c3c }
+
+
+
+#pling { display: none }

@@ -116,6 +116,16 @@ ui.on('progress', (file) => {
 
 
 
+ui.on('error', (msg) => notify('error', msg))
+const notify = (type, msg) => {
+	const notification = dom('p', {class: 'notification ' + type})
+	notification.innerHTML = msg
+	document.body.appendChild(notification)
+	setTimeout(() => document.body.removeChild(notification), 4000)
+}
+
+
+
 const warn = () => 'There are files that haven\'t been transferred yet.'
 ui.on('start', () => {window.onbeforeunload = warn})
 ui.on('done', () => {window.onbeforeunload = null})

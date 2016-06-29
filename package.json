@@ -11,7 +11,9 @@
 	"dependencies": {
 		"signalhub": "^4.7.4",
 		"simple-peer": "^6.0.4",
-		"component-emitter": "^0.2"
+		"shorthash": "^0.0.2",
+		"component-emitter": "^0.2",
+		"lodash.pick": "^4.2.1"
 	},
 	"devDependencies": {
 		"browserify": "^13.0.1",

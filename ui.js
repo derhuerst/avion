@@ -24,9 +24,6 @@ const prettySize = (bytes) => {
 	return r + metrics[n]
 }
 
-const fingerprint = (file) =>
-	[file.name, file.size, file.lastModified, file.type].join(',')
-
 const ui = new Emitter()
 module.exports = ui
 
@@ -36,10 +33,7 @@ const select = $('#add-select input')
 
 select.addEventListener('change', (e) => {
 	console.debug('files', e.target.files)
-	for (let file of Array.from(e.target.files)) {
-		file.id = fingerprint(file)
-		ui.emit('file', file)
-	}
+	for (let file of Array.from(e.target.files)) ui.emit('file', file)
 })
 
 const drop = $('#add-drop')
@@ -51,10 +45,7 @@ drop.addEventListener('dragover', (e) => {
 drop.addEventListener('drop', (e) => {
 	e.preventDefault()
 	console.debug('files', e.dataTransfer.files)
-	for (let file of e.dataTransfer.files) {
-		file.id = fingerprint(file)
-		ui.emit('file', file)
-	}
+	for (let file of e.dataTransfer.files) ui.emit('file', file)
 })
 
 
@@ -76,30 +67,30 @@ const transfers = $('#transfer tbody')
 const statuses = {queued: '…', running: '●', done: '✓', failed: '✗'}
 const files = {} // DOM elements by file id
 
-ui.on('file', (file) => {
-	if (file.id in files) return
-	const el = dom('tr', {id: 'transfer-' + file.id, class: file.status})
-
-	const name = dom('td', {class: 'name'})
-	name.innerHTML = file.name
-	el.appendChild(name)
-
-	const size = dom('td', {class: 'size'})
-	size.innerHTML = prettySize(file.size)
-	el.appendChild(size)
-
-	const status = dom('td', {class: 'status'})
-	status.innerHTML = statuses.queued
-	el.appendChild(status)
-
-	el._ = {name, size, status}
-	transfers.appendChild(el)
-})
-
 ui.on('progress', (file) => {
-	const row = $('transfer-' + file.id)
-	row.setAttribute('class', file.status)
-	row._.status.innerHTML = statuses[file.status]
+	console.debug('progress', file)
+	if (file.id in files) {
+		const row = $('transfer-' + file.id)
+		row.setAttribute('class', file.status)
+		row._.status.innerHTML = statuses[file.status]
+	} else {
+		const row = dom('tr', {id: 'transfer-' + file.id, class: file.status})
+
+		const name = dom('td', {class: 'name'})
+		name.innerHTML = file.name
+		row.appendChild(name)
+
+		const size = dom('td', {class: 'size'})
+		size.innerHTML = prettySize(file.size)
+		row.appendChild(size)
+
+		const status = dom('td', {class: 'status'})
+		status.innerHTML = statuses.queued
+		row.appendChild(status)
+
+		row._ = {name, size, status}
+		transfers.appendChild(row)
+	}
 })
 
 

@@ -3,3 +3,6 @@ sudo: false
 node_js:
   - 'stable'
   - '6'
+script:
+  - npm install
+  - npm run build

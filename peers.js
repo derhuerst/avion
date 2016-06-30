@@ -11,8 +11,7 @@ const randomId = () => {
 
 
 
-// const channel = location.hash.length === 7 ? location.hash.slice(1) : randomId()
-const channel = location.hash.length === 7 ? location.hash.slice(1) : 'foo123'
+const channel = location.hash.length === 7 ? location.hash.slice(1) : randomId()
 const initiator = location.hash.length === 7
 
 

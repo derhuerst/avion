@@ -23,7 +23,7 @@
 	},
 	"scripts": {
 		"bundle": "browserify avion.js -o bundle.js",
-		"uglify": "uglifyjs -mc --mangle-props --screw-ie8 -o bundle.min.js -- bundle.js",
+		"uglify": "uglifyjs -mc --screw-ie8 -o bundle.min.js -- bundle.js",
 		"build": "npm run bundle; npm run uglify",
 		"prepublish": "npm run build",
 		"dev":   "wzrd avion.js:bundle.js -- --debug",

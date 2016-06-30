@@ -79,6 +79,10 @@ ui.on('progress', (file) => {
 		const row = files[file.id]
 		row.setAttribute('class', file.status)
 		row._.status.innerHTML = statuses[file.status]
+		file.on('progress', () => {
+			const el = files[file.id]._.status
+			el.innerHTML = Math.round(100 * file.transferred / file.size) + '%'
+		})
 
 	} else {
 		const row = dom('tr', {id: 'transfer-' + file.id, class: file.status})

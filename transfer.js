@@ -32,7 +32,11 @@ const transfer = (dataPeer, channel, file, isLeader) => {
 			file.read()
 			.then((chunk) => {
 				dataPeer.send(chunk)
-				channel.once('continue', next)
+				channel.once('continue', () => {
+					file.transferred += chunk.byteLength
+					file.emit('progress')
+					next()
+				})
 			}, fail)
 		}
 		next()
@@ -41,6 +45,8 @@ const transfer = (dataPeer, channel, file, isLeader) => {
 	const receive = () => {
 		const onChunk = (chunk) => {
 			file.write(chunk)
+			file.transferred += chunk.byteLength
+			file.emit('progress')
 			channel.send('continue')
 		}
 		dataPeer.on('data', onChunk)

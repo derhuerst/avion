@@ -9,7 +9,7 @@ const write = require('file-saver').saveAs
 const wrap = (name, size, type, status) => {
 	const file = new Emitter()
 	Object.assign(file, {
-		name, size, type, status,
+		name, type, status, size, transferred: 0,
 		id: hash.unique([name, size, type].join('/'))
 	})
 	file.setStatus = (status) => {

@@ -1,15 +1,19 @@
 body {
 	margin: 3em auto 2em auto; padding: 0; max-width: 22rem;
-	line-height: 1.35; font-size: 110%;
+	line-height: 1.35; font-size: 110%; font-weight: 300;
 	font-family: 'Helvetica Neue', Helvetica, sans-serif;
 	color: #333;
 }
+body.wide { max-width: 30rem }
 
-h1 { margin: 1rem 0; font-size: 3rem; text-align: center }
+h1 { margin: 3rem 0 1rem 0; font-size: 3rem; text-align: center }
+h2 { margin: 3rem 0 1rem 0; font-size: 1.3rem; color: #777; font-weight: 400 }
 
 p { margin: 1rem 0; text-align: justify }
 a { text-decoration: none; color: #56b7f8 }
 a:hover { color: #63c4ff }
+i { color: #56b7f8 }
+strong { font-weight: 500 }
 
 input{
 	width: 100%; padding: 0;

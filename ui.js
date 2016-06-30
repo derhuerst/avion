@@ -61,7 +61,7 @@ link.addEventListener('click', () => {
 	link.select()
 	link.setSelectionRange(0, link.value.length)
 })
-ui.setId = (id) => {link.value = `${location.href}#${id}`}
+ui.on('id', (id) => {link.value = `${location.href}#${id}`})
 ui.hideLink = () => $('#link').style.display = 'none'
 
 
@@ -126,6 +126,19 @@ const notify = (type, msg) => {
 	setTimeout(() => document.body.removeChild(notification), 4000)
 }
 ui.on('error', (msg) => notify('error', msg))
+
+
+
+let title = 'avion'
+ui.on('id', (id) => {document.title = title = id + ' – avion'})
+
+ui.on('progress', (file) => {
+	let done = 0
+	for (let id in files) {
+		if (files[id].getAttribute('class') === 'done') done++
+	}
+	document.title = done + '/' + Object.keys(files).length + ' – ' + title
+})
 
 
 

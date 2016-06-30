@@ -1,6 +1,7 @@
 'use strict'
 
 const find = require('lodash.find')
+const every = require('lodash.every')
 
 const channel = require('./channel')
 const ui = require('./ui')
@@ -18,11 +19,15 @@ const dataPeer = require('./peers').data
 const list = channel(metaPeer, 'list')
 const files = {} // by id
 
+const pending = (f) => f.status === 'pending'
+const doneOrFailed = (f) => f.status === 'done' || f.status === 'failed'
+
 
 
 // metaPeer <-> ui brige
 
 const add = (f) => {
+	if (Object.keys(files).length === 0) ui.emit('start')
 	if (f.id in files) Object.assign(files[f.id], f)
 	else {
 		files[f.id] = f
@@ -57,7 +62,7 @@ let file = null
 
 const next = () => {
 	if (file || !isLeader || !metaPeer.connected) return
-	file = find(files, (f) => f.status === 'pending')
+	file = find(files, pending)
 	if (!file) return
 
 	sync.send(file.id, () => {
@@ -77,11 +82,12 @@ if (!isLeader) sync.on('data', (id) => {
 
 
 if (isLeader) ui.hideLink()
-ui.setId(id)
+ui.emit('id', id)
 metaPeer.once('connect', () => {if (dataPeer.connected) ui.emit('connect')})
 dataPeer.once('connect', () => {if (metaPeer.connected) ui.emit('connect')})
 
 
 
+ui.on('progress', () => {if (every(files, doneOrFailed)) ui.emit('done')})
 metaPeer.on('error', (e) => ui.emit('error', e.message))
 if (isLeader) metaPeer.on('connect', next)

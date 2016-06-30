@@ -9,15 +9,16 @@
 	"issues":      "https://github.com/derhuerst/avion/issues",
 	"license":     "ISC",
 	"dependencies": {
-		"signalhub": "^4.7.4",
-		"simple-peer": "^6.0.4",
+		"lodash.find": "^4.4",
 		"shorthash": "^0.0.2",
-		"component-emitter": "^0.2",
-		"lodash.pick": "^4.2.1"
+		"component-emitter": "^1.2.1",
+		"file-saver": "^1.3.2",
+		"signalhub": "^4.7.4",
+		"simple-peer": "^6.0.4"
 	},
 	"devDependencies": {
 		"browserify": "^13.0.1",
-		"uglify-js": "^2.6.4",
+		"uglify-js": "mishoo/UglifyJS2#harmony",
 		"wzrd": "^1.4"
 	},
 	"scripts": {

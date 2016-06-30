@@ -52,7 +52,6 @@ const received = (f) => {
 	const chunks = []
 	file.write = (chunk) => {chunks.push(chunk)}
 	file.end = () => {
-		console.warn('end', chunks)
 		write(new File(chunks, f.name, {type: f.type}))
 	}
 	return file

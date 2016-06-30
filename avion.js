@@ -1,11 +1,14 @@
 'use strict'
 
 const find = require('lodash.find')
+
 const channel = require('./channel')
+const ui = require('./ui')
 const incomingFile = require('./file').received
 const outgoingFile = require('./file').sent
-const ui = require('./ui')
+const transfer = require('./transfer')
 
+const isLeader = require('./peers').initiator
 const metaPeer = require('./peers').meta
 const dataPeer = require('./peers').data
 
@@ -34,46 +37,26 @@ ui.on('file', (f) => {
 
 
 
-const send = (f) => {
-	console.log('sending', f.id)
-	f.read().pipe(peers.data)
-}
-const receive = (f) => {
-	console.log('receiving', f.id)
-	const onData = (d) => f.write(d)
-	peers.data.on('data', onData)
-	peers.data.once('end', () => {
-		peers.data.removeListener('data', onData)
-		f.end()
-	})
-}
-
-
-
-const commands = channel(peers.meta, 'commands')
+const sync = channel(metaPeer, 'sync')
 let file = null
 
 const next = () => {
-	console.debug('next')
-	if (file || !peers.initiator) return
-
+	if (file || !isLeader) return
 	file = find(files, (file) => file.status === 'pending')
 	if (!file) return
 
-	commands.send(file.id, () => {
-		if (file.mode === 'send') send(file)
-		else receive(file)
-	})
+	sync.send(file.id, () =>
+		transfer(dataPeer, channel(metaPeer, file.id), file, true))
 }
 
-if (peers.initiator) peers.meta.on('connect', next)
-if (!peers.initiator) commands.on('data', (id) => {
+if (!isLeader) sync.on('data', (id) => {
+	if (!files[id]) return
 	file = files[id]
-	if (!file) return console.error('unknown file', id)
-	if (file.mode === 'send') send(file)
-	else receive(file)
+
+	transfer(dataPeer, channel(metaPeer, file.id), file, false)
 })
 
 
 
 metaPeer.on('error', (e) => ui.emit('error', e.message))
+if (isLeader) metaPeer.on('connect', next)

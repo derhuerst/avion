@@ -18,9 +18,11 @@ const initiator = location.hash.length === 7
 
 
 const peer = (channel, hub) => {
-	const p = new Peer({initiator, reconnectTimer: 500, channelName: channel})
+	const p = new Peer({
+		initiator, reconnectTimer: 500, channelName: channel, trickle: false})
 	p.on('error', (e) => console.error(`${channel}:error`, e))
 	p.on('connect', () => console.info(`${channel}:connect`))
+	p.on('close', () => console.info(`${channel}:close`))
 
 	p.on('signal', (s) => {
 		// console.debug(`${channel}:signal-in`)

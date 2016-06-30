@@ -2,7 +2,6 @@
 
 const Emitter = require('component-emitter')
 const hash = require('shorthash')
-const read = require('filereader-stream')
 const write = require('file-saver').saveAs
 
 
@@ -27,21 +26,22 @@ const sent = (f) => {
 	const file = wrap(f.name, f.size, f.type, 'pending')
 	file.mode = 'send'
 
-	file.read = () => {
-		file.setStatus('running')
-		const stream = read(f)
-		stream.on('error', (e) => {
-			console.error(file.id + ':error', e)
-			file.setStatus('failed')
-			file.emit('change')
-		})
-		stream.on('end', () => {
-			console.debug(file.id + ':end')
-			file.setStatus('done')
-			file.emit('change')
-		})
-		return stream
-	}
+	let i = 0
+	const s = 1024 * 1024
+	const l = Math.ceil(file.size / s)
+	file.read = () => new Promise((yay, nay) => {
+		if (i >= l) return nay(null)
+		const blob = f.slice(i * s, Math.min((i + 1) * s, file.size), file.type)
+		i++
+
+		const reader = new FileReader()
+		reader.onabort = nay
+		reader.onerror = nay
+		reader.onload = (chunk) => {
+			if (reader.readyState === FileReader.DONE) yay(reader.result)
+		}
+		reader.readAsArrayBuffer(blob)
+	})
 	return file
 }
 
@@ -50,13 +50,10 @@ const received = (f) => {
 	file.mode = 'receive'
 
 	const chunks = []
-	file.write = (chunk) => {
-		file.setStatus('running')
-		chunks.push(chunk)
-	}
+	file.write = (chunk) => {chunks.push(chunk)}
 	file.end = () => {
+		console.warn('end', chunks)
 		write(new File(chunks, f.name, {type: f.type}))
-		file.setStatus('done')
 	}
 	return file
 }

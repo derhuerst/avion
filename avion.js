@@ -83,8 +83,12 @@ if (!isLeader) sync.on('data', (id) => {
 
 if (isLeader) ui.hideLink()
 ui.emit('id', id)
-metaPeer.once('connect', () => {if (dataPeer.connected) ui.emit('connect')})
-dataPeer.once('connect', () => {if (metaPeer.connected) ui.emit('connect')})
+metaPeer.on('connect', () => {if (dataPeer.connected) ui.emit('connect')})
+dataPeer.on('connect', () => {if (metaPeer.connected) ui.emit('connect')})
+metaPeer.on('close', () => ui.emit('disconnect'))
+dataPeer.on('close', () => ui.emit('disconnect'))
+metaPeer.on('error', () => ui.emit('disconnect'))
+dataPeer.on('error', () => ui.emit('disconnect'))
 
 
 

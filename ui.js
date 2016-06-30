@@ -27,6 +27,15 @@ const prettySize = (bytes) => {
 const ui = new Emitter()
 module.exports = ui
 
+const files = {} // DOM elements by file id
+const count = (status) => {
+	let i = 0
+	for (let id in files) {
+		if (files[id].getAttribute('class') === status) i++
+	}
+	return i
+}
+
 
 
 const select = $('#add-select input')
@@ -69,7 +78,6 @@ ui.hideLink = () => $('#link').style.display = 'none'
 const transfers = $('#transfer tbody')
 
 const statuses = {pending: '…', running: '●', done: '✓', failed: '✗'}
-const files = {} // DOM elements by file id
 
 ui.on('progress', (file) => {
 	console.debug('progress', file)
@@ -132,17 +140,14 @@ ui.on('error', (msg) => notify('error', msg))
 let title = 'avion'
 ui.on('id', (id) => {document.title = title = id + ' – avion'})
 
-ui.on('progress', (file) => {
-	let done = 0
-	for (let id in files) {
-		if (files[id].getAttribute('class') === 'done') done++
-	}
-	document.title = done + '/' + Object.keys(files).length + ' – ' + title
-})
-
-
+ui.on('progress', (file) => {document.title =
+	count('done') + '/' + Object.keys(files).length + ' – ' + title})
 
 ui.on('connect', () => notify('hint', 'You are connected.'))
+ui.on('disconnect', () => notify(
+	(count('pending') + count('running') > 0) ? 'error' : 'hint',
+	'You are disconnected.'))
+
 const warn = () => 'There are files that haven\'t been transferred yet.'
 ui.on('start', () => {window.onbeforeunload = warn})
 ui.on('done', () => {window.onbeforeunload = null})

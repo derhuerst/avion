@@ -15,10 +15,13 @@ const channel = (network, name) => {
 		d = JSON.parse(d)
 		if (d.channel !== name) return
 
-		if ('ack' in d) return channel.emit('ack:' + d.id)
+		if ('ack' in d) {
+			console.debug(name + ':ack', d.ack)
+			return channel.emit('ack:' + d.ack)
+		}
 		network.send(JSON.stringify({channel: name, ack: d.id}))
 
-		console.debug(name + ':in', d.payload)
+		console.debug(name + ':in', d.id, d.payload)
 		channel.emit('data', d.payload)
 	})
 
@@ -26,7 +29,7 @@ const channel = (network, name) => {
 		const id = Id()
 		if ('function' === typeof cb) channel.once('ack:' + id, cb)
 
-		console.debug(name + ':out', payload)
+		console.debug(name + ':out', payload, `(${id})`)
 		network.send(JSON.stringify({channel: name, id, payload}))
 	}
 

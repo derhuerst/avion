@@ -32,8 +32,8 @@ module.exports = ui
 const select = $('#add-select input')
 
 select.addEventListener('change', (e) => {
-	console.debug('files', e.target.files)
-	for (let file of Array.from(e.target.files)) ui.emit('file', file)
+	for (let file of Array.from(e.target.files))
+		ui.emit('file', file)
 })
 
 
@@ -49,7 +49,8 @@ drop.addEventListener('dragover', (e) => {
 })
 drop.addEventListener('drop', (e) => {
 	e.preventDefault()
-	for (let file of e.dataTransfer.files) ui.emit('file', file)
+	for (let file of e.dataTransfer.files)
+		ui.emit('file', file)
 })
 
 

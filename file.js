@@ -3,7 +3,7 @@
 const Emitter = require('component-emitter')
 const hash = require('shorthash')
 const read = require('filereader-stream')
-const write = require('file-saver')
+const write = require('file-saver').saveAs
 
 
 

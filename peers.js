@@ -23,15 +23,17 @@ const peer = (channel, hub) => {
 	p.on('connect', () => console.info(`${channel}:connect`))
 
 	p.on('signal', (s) => {
+		// console.debug(`${channel}:signal-in`)
 		s.fromInitiator = initiator
 		hub.broadcast(channel, s)
 	})
 	const subscription = hub.subscribe(channel)
 	subscription.on('data', (s) => {
 		if (s.fromInitiator === initiator) return
+		// console.debug(`${channel}:signal-out`)
 		p.signal(s)
 	})
-	p.on('connect', () => subscription.destroy())
+	p.once('connect', () => subscription.destroy())
 
 	return p
 }

@@ -1,34 +1,35 @@
 'use strict'
 
 const find = require('lodash.find')
-
 const channel = require('./channel')
-const peers = require('./peers')
-const receivedFile = require('./file').received
-const sentFile = require('./file').sent
+const incomingFile = require('./file').received
+const outgoingFile = require('./file').sent
 const ui = require('./ui')
 
+const metaPeer = require('./peers').meta
+const dataPeer = require('./peers').data
 
 
-const sync = channel(peers.meta, 'sync')
+
+const list = channel(metaPeer, 'list')
 const files = {} // by id
 
 
 
-// meta <-> ui brige
+// metaPeer <-> ui brige
 
-sync.on('data', (f) => {
-	f = receivedFile(f)
-	files[f.id] = f
+list.on('data', (f) => {
+	f = files[f.id] = incomingFile(f)
 	ui.emit('progress', f)
+	f.on('status', () => ui.emit('progress', f))
 	next()
 })
 
 ui.on('file', (f) => {
-	f = sentFile(f)
-	files[f.id] = f
+	f = files[f.id] = outgoingFile(f)
 	ui.emit('progress', f)
-	sync.send({id: f.id, name: f.name, size: f.size, type: f.type}, next)
+	f.on('status', () => ui.emit('progress', f))
+	list.send({id: f.id, name: f.name, size: f.size, type: f.type}, next)
 })
 
 
@@ -57,7 +58,7 @@ const next = () => {
 	if (file || !peers.initiator) return
 
 	file = find(files, (file) => file.status === 'pending')
-	if (!file) return ui.emit('done')
+	if (!file) return
 
 	commands.send(file.id, () => {
 		if (file.mode === 'send') send(file)
@@ -75,4 +76,4 @@ if (!peers.initiator) commands.on('data', (id) => {
 
 
 
-peers.meta.on('error', (e) => ui.emit('error', e.message))
+metaPeer.on('error', (e) => ui.emit('error', e.message))

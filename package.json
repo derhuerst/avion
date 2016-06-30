@@ -26,6 +26,7 @@
 		"uglify": "uglifyjs -mc --mangle-props --screw-ie8 -o bundle.min.js -- bundle.js",
 		"build": "npm run bundle; npm run uglify",
 		"prepublish": "npm run build",
-		"dev":   "wzrd avion.js:bundle.js -- --debug"
+		"dev":   "wzrd avion.js:bundle.js -- --debug",
+		"ssh": "ssh -i ./scaleway root@avion.jannisr.de"
 	}
 }

@@ -26,6 +26,7 @@ const channel = (network, name) => {
 	})
 
 	channel.send = (payload, cb) => {
+		if (!network.connected) return
 		const id = Id()
 		if ('function' === typeof cb) channel.once('ack:' + id, cb)
 

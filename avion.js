@@ -38,19 +38,28 @@ ui.on('file', (f) => {
 	list.send({id: f.id, name: f.name, size: f.size, type: f.type}, next)
 })
 
+metaPeer.on('connect', () => {
+	for (let id in files) {
+		const f = files[id]
+		list.send({id: f.id, name: f.name, size: f.size, type: f.type})
+	}
+})
+
 
 
 const sync = channel(metaPeer, 'sync')
 let file = null
 
 const next = () => {
-	if (file || !isLeader) return
+	if (file || !isLeader || !metaPeer.connected) return
 	file = find(files, (file) => file.status === 'pending')
 	if (!file) return
 
-	sync.send(file.id, () =>
-		transfer(dataPeer, channel(metaPeer, file.id), file, true))
+	sync.send(file.id, () => {
+		transfer(dataPeer, channel(metaPeer, file.id), file, true)
 		.catch((e) => ui.emit('error', e))
+		.then(() => {file = null; next()})
+	})
 }
 
 if (!isLeader) sync.on('data', (id) => {

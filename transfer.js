@@ -2,7 +2,7 @@
 
 
 
-const transfer = (dataPeer, channel, file, isLeader) => {
+const transfer = (dataPeer, channel, file, isLeader) => new Promise((yay, nay) => {
 	const onStart = () => {
 		console.info(file.id + ':start')
 		file.setStatus('running')
@@ -10,10 +10,12 @@ const transfer = (dataPeer, channel, file, isLeader) => {
 	const onEnd = () => {
 		console.info(file.id + ':end')
 		file.setStatus('done')
+		yay()
 	}
 	const onError = () => {
 		console.info(file.id + ':error')
 		file.setStatus('failed')
+		nay(new Error(file.name + ' could not be transferred.'))
 	}
 
 
@@ -69,6 +71,6 @@ const transfer = (dataPeer, channel, file, isLeader) => {
 		start()
 	})
 	else channel.once('start', start)
-}
+})
 
 module.exports = transfer

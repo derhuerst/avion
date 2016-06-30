@@ -36,15 +36,19 @@ select.addEventListener('change', (e) => {
 	for (let file of Array.from(e.target.files)) ui.emit('file', file)
 })
 
+
+
 const drop = $('#add-drop')
 
+const nope = (e) => {e.stopPropagation(); e.preventDefault(); return false}
+drop.addEventListener('dragenter', nope)
+drop.addEventListener('dragover', nope)
+
 drop.addEventListener('dragover', (e) => {
-	e.preventDefault()
 	e.dataTransfer.dropEffect = 'copy'
 })
 drop.addEventListener('drop', (e) => {
 	e.preventDefault()
-	console.debug('files', e.dataTransfer.files)
 	for (let file of e.dataTransfer.files) ui.emit('file', file)
 })
 
@@ -64,17 +68,20 @@ ui.on('id', (id) => {
 
 const transfers = $('#transfer tbody')
 
-const statuses = {queued: '…', running: '●', done: '✓', failed: '✗'}
+const statuses = {pending: '…', running: '●', done: '✓', failed: '✗'}
 const files = {} // DOM elements by file id
 
 ui.on('progress', (file) => {
 	console.debug('progress', file)
+
 	if (file.id in files) {
-		const row = $('transfer-' + file.id)
+		const row = files[file.id]
 		row.setAttribute('class', file.status)
 		row._.status.innerHTML = statuses[file.status]
+
 	} else {
 		const row = dom('tr', {id: 'transfer-' + file.id, class: file.status})
+		files[file.id] = row
 
 		const name = dom('td', {class: 'name'})
 		name.innerHTML = file.name
@@ -85,7 +92,7 @@ ui.on('progress', (file) => {
 		row.appendChild(size)
 
 		const status = dom('td', {class: 'status'})
-		status.innerHTML = statuses.queued
+		status.innerHTML = statuses.pending
 		row.appendChild(status)
 
 		row._ = {name, size, status}
@@ -107,13 +114,13 @@ ui.on('progress', (file) => {
 
 
 
-ui.on('error', (msg) => notify('error', msg))
 const notify = (type, msg) => {
 	const notification = dom('p', {class: 'notification ' + type})
 	notification.innerHTML = msg
 	document.body.appendChild(notification)
 	setTimeout(() => document.body.removeChild(notification), 4000)
 }
+ui.on('error', (msg) => notify('error', msg))
 
 
 

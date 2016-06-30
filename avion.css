@@ -20,6 +20,9 @@ input{
 	border: 0;
 }
 
+a:focus,
+input:focus { outline: 1px dotted #56b7f8 }
+
 
 
 .notification {
@@ -59,7 +62,7 @@ input{
 #add-drop {
 	margin-top: .5rem;
 	text-align: center; font-size: 105%; line-height: 3em;
-	color: #505050; background-color: #e3e3e3;
+	color: #505050; border: .15rem dashed #aaa;
 	cursor: default;
 }
 

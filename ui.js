@@ -12,7 +12,7 @@ const dom = (tag, props) => {
 	return el
 }
 
-const metrics = ['b','k','m','g','t']
+const metrics = ['b','kb','mb','gb']
 const prettySize = (bytes) => {
 	// How to Format Raw Byte File Size into a Humanly Readable Value Using PHP
 	// http://www.stemkoski.com/how-to-format-raw-byte-file-size-into-a-humanly-readable-value-using-php/

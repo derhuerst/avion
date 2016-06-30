@@ -25,7 +25,7 @@ input{
 }
 
 a:focus,
-input:focus { outline: 1px dotted #56b7f8 }
+input:focus { outline: .1rem dotted #56b7f8 }
 
 
 
@@ -74,8 +74,6 @@ input:focus { outline: 1px dotted #56b7f8 }
 
 
 #link { margin: 1rem 0 }
-#link-input:hover,
-#link-input:active { background-color: #eee }
 
 
 

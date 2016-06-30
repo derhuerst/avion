@@ -22,19 +22,24 @@ const files = {} // by id
 
 // metaPeer <-> ui brige
 
+const add = (f) => {
+	if (f.id in files) Object.assign(files[f.id], f)
+	else {
+		files[f.id] = f
+		f.on('status', () => ui.emit('progress', f))
+	}
+	ui.emit('progress', files[f.id])
+}
+
 list.on('data', (f) => {
 	f = incomingFile(f)
-	files[f.id] = f
-	ui.emit('progress', f)
-	f.on('status', () => ui.emit('progress', f))
+	add(f)
 	next()
 })
 
 ui.on('file', (f) => {
-	f = files[f.id] = outgoingFile(f)
-	files[f.id] = f
-	ui.emit('progress', f)
-	f.on('status', () => ui.emit('progress', f))
+	f = outgoingFile(f)
+	add(f)
 	list.send({id: f.id, name: f.name, size: f.size, type: f.type}, next)
 })
 
@@ -52,7 +57,7 @@ let file = null
 
 const next = () => {
 	if (file || !isLeader || !metaPeer.connected) return
-	file = find(files, (file) => file.status === 'pending')
+	file = find(files, (f) => f.status === 'pending')
 	if (!file) return
 
 	sync.send(file.id, () => {

@@ -22,7 +22,8 @@ const files = {} // by id
 // metaPeer <-> ui brige
 
 list.on('data', (f) => {
-	f = files[f.id] = incomingFile(f)
+	f = incomingFile(f)
+	files[f.id] = f
 	ui.emit('progress', f)
 	f.on('status', () => ui.emit('progress', f))
 	next()
@@ -30,6 +31,7 @@ list.on('data', (f) => {
 
 ui.on('file', (f) => {
 	f = files[f.id] = outgoingFile(f)
+	files[f.id] = f
 	ui.emit('progress', f)
 	f.on('status', () => ui.emit('progress', f))
 	list.send({id: f.id, name: f.name, size: f.size, type: f.type}, next)

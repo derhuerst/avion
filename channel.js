@@ -21,7 +21,7 @@ const channel = (network, name) => {
 		}
 		network.send(JSON.stringify({channel: name, ack: d.id}))
 
-		console.debug(name + ':in', d.id, d.payload)
+		console.debug(name + ':in', d.payload, `(${d.id})`)
 		channel.emit('data', d.payload)
 	})
 

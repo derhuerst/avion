@@ -8,6 +8,7 @@ const incomingFile = require('./file').received
 const outgoingFile = require('./file').sent
 const transfer = require('./transfer')
 
+const id = require('./peers').channel
 const isLeader = require('./peers').initiator
 const metaPeer = require('./peers').meta
 const dataPeer = require('./peers').data
@@ -49,6 +50,7 @@ const next = () => {
 
 	sync.send(file.id, () =>
 		transfer(dataPeer, channel(metaPeer, file.id), file, true))
+		.catch((e) => ui.emit('error', e))
 }
 
 if (!isLeader) sync.on('data', (id) => {
@@ -57,6 +59,13 @@ if (!isLeader) sync.on('data', (id) => {
 
 	transfer(dataPeer, channel(metaPeer, file.id), file, false)
 })
+
+
+
+if (isLeader) ui.hideLink()
+ui.setId(id)
+metaPeer.once('connect', () => {if (dataPeer.connected) ui.emit('connect')})
+dataPeer.once('connect', () => {if (metaPeer.connected) ui.emit('connect')})
 
 
 

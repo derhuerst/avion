@@ -61,9 +61,8 @@ link.addEventListener('click', () => {
 	link.select()
 	link.setSelectionRange(0, link.value.length)
 })
-ui.on('id', (id) => {
-	link.value = `${location.href}#${id}`
-})
+ui.setId = (id) => {link.value = `${location.href}#${id}`}
+ui.hideLink = () => $('#link').style.display = 'none'
 
 
 
@@ -79,12 +78,14 @@ ui.on('progress', (file) => {
 		const row = files[file.id]
 		row.setAttribute('class', file.status)
 		row._.status.innerHTML = statuses[file.status]
+
+	} else {
 		file.on('progress', () => {
 			const el = files[file.id]._.status
 			el.innerHTML = Math.round(100 * file.transferred / file.size) + '%'
 		})
+		file.on('done', () => sound(success))
 
-	} else {
 		const row = dom('tr', {id: 'transfer-' + file.id, class: file.status})
 		files[file.id] = row
 
@@ -107,15 +108,14 @@ ui.on('progress', (file) => {
 
 
 
-const audio = $('#pling')
-audio.volume = .3
+const success = $('#success')
+success.volume = 1
 
-ui.on('progress', (file) => {
-	if (file.status !== 'done') return
-	audio.pause()
-	audio.currentTime = 0
-	audio.play()
-})
+const sound = (el) => {
+	el.pause()
+	el.currentTime = 0
+	el.play()
+}
 
 
 
@@ -129,6 +129,7 @@ ui.on('error', (msg) => notify('error', msg))
 
 
 
+ui.on('connect', () => notify('hint', 'You are connected.'))
 const warn = () => 'There are files that haven\'t been transferred yet.'
 ui.on('start', () => {window.onbeforeunload = warn})
 ui.on('done', () => {window.onbeforeunload = null})

@@ -20,23 +20,18 @@ const initiator = location.hash.length === 7
 const peer = (channel, hub) => {
 	const p = new Peer({initiator, reconnectTimer: 500, channelName: channel})
 	p.on('error', (e) => console.error(`${channel}:error`, e))
-	p.on('data', (d) => console.debug(`${channel}:data`, d.toString()))
+	p.on('connect', () => console.info(`${channel}:connect`))
 
 	p.on('signal', (s) => {
-		console.debug(`${channel}:signal-out`, s)
 		s.fromInitiator = initiator
 		hub.broadcast(channel, s)
 	})
 	const subscription = hub.subscribe(channel)
 	subscription.on('data', (s) => {
 		if (s.fromInitiator === initiator) return
-		console.debug(`${channel}:signal-in`, s)
 		p.signal(s)
 	})
-	p.on('connect', () => {
-		console.info(`${channel}:connect`)
-		subscription.destroy()
-	})
+	p.on('connect', () => subscription.destroy())
 
 	return p
 }

@@ -28,6 +28,7 @@
 		"build": "npm run bundle; npm run uglify",
 		"prepublish": "npm run build",
 		"dev":   "wzrd avion.js:bundle.js -- --debug",
-		"ssh": "ssh -i ./scaleway root@avion.jannisr.de"
+		"ssh": "ssh -i ./scaleway root@avion.jannisr.de",
+		"deploy": "./deploy"
 	}
 }

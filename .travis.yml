@@ -1,8 +1,9 @@
-language: node_js
 sudo: false
+language: node_js
 node_js:
   - 'stable'
+  - '7'
   - '6'
 script:
-  - npm install
-  - npm run build
+  - 'npm install'
+  - 'npm run build'

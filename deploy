@@ -3,4 +3,4 @@
 rsync -rav --delete \
 	--exclude '.*' \
 	--exclude node_modules \
-	. root@static.jannisr.de:/var/www/avion.jannisr.de/
+	. root@avion.jannisr.de:/var/www/avion.jannisr.de/

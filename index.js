@@ -3,16 +3,16 @@
 const find = require('lodash.find')
 const every = require('lodash.every')
 
-const channel = require('./channel')
-const ui = require('./ui')
-const incomingFile = require('./file').received
-const outgoingFile = require('./file').sent
-const transfer = require('./transfer')
+const channel = require('./lib/channel')
+const ui = require('./lib/ui')
+const incomingFile = require('./lib/file').received
+const outgoingFile = require('./lib/file').sent
+const transfer = require('./lib/transfer')
 
-const id = require('./peers').channel
-const isLeader = require('./peers').initiator
-const metaPeer = require('./peers').meta
-const dataPeer = require('./peers').data
+const id = require('./lib/peers').channel
+const isLeader = require('./lib/peers').initiator
+const metaPeer = require('./lib/peers').meta
+const dataPeer = require('./lib/peers').data
 
 
 

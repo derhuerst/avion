@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rsync -rav --delete \
-	--exclude '.*' \
-	--exclude node_modules \
-	. root@avion.jannisr.de:/var/www/avion.jannisr.de/

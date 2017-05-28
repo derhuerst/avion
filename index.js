@@ -11,10 +11,12 @@ const transfer = require('./lib/transfer')
 
 const id = require('./lib/peers').channel
 const isLeader = require('./lib/peers').initiator
-const metaPeer = require('./lib/peers').meta
-const dataPeer = require('./lib/peers').data
+const peer = require('./lib/peers').peer
 
 
+
+const metaPeer = peer(peer.channel + '-meta')
+const dataPeer = peer(peer.channel + '-data')
 
 const list = channel(metaPeer, 'list')
 const files = {} // by id
@@ -83,6 +85,8 @@ if (!isLeader) sync.on('data', (id) => {
 
 if (isLeader) ui.hideLink()
 ui.emit('id', id)
+metaPeer.on('error', (err) => ui.emit('error', err))
+dataPeer.on('error', (err) => ui.emit('error', err))
 metaPeer.on('connect', () => {if (dataPeer.connected) ui.emit('connect')})
 dataPeer.on('connect', () => {if (metaPeer.connected) ui.emit('connect')})
 metaPeer.on('close', () => ui.emit('disconnect'))

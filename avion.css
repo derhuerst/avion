@@ -97,7 +97,7 @@ input:focus { outline: .1rem dotted #56b7f8 }
 }
 #transfer td.status { min-width: 0.5em }
 
-#transfer          .status { color: #999 }
-#transfer .running .status { color: #56b7f8 }
-#transfer .done    .status { color: #2ecc71 }
-#transfer .failed  .status { color: #e74c3c }
+#transfer         .status { color: #999 }
+#transfer .active .status { color: #56b7f8 }
+#transfer .done   .status { color: #2ecc71 }
+#transfer .failed .status { color: #e74c3c }

@@ -9,6 +9,8 @@ const createElement = require('virtual-dom/create-element')
 const render = require('./lib/ui')
 const fileReader = require('./lib/file-reader')
 const connect = require('./lib/connect')
+const notify = require('./lib/notify')
+const pling = require('./lib/pling')
 
 const state = {
 	id: location.hash.length === 7 ? location.hash.slice(1) : generateId(6),
@@ -36,7 +38,10 @@ const onFile = (file, isIncoming = false) => {
 		// todo: handle chunk
 		rerender()
 	})
-	file.on('end', rerender)
+	file.on('end', () => {
+		pling()
+		rerender()
+	})
 }
 
 const init = () => {
@@ -59,10 +64,22 @@ const init = () => {
 		})
 		endpoint.on('done', rerender)
 
+		notify('hint', 'You are connected.')
 		rerender()
 	}
 	d.on('connect', onConnect)
 	s.on('connect', onConnect)
+
+	const onClose = () => {
+		// todo: handle disconnects properly
+		notify('hint', 'You are disconnected.')
+	}
+	d.on('close', onClose)
+	s.on('close', onClose)
+
+	const onError = (err) => notify('error', err.message || err.toString())
+	d.on('error', onError)
+	s.on('error', onError)
 
 	state.dataPeer = d
 	state.signalingPeer = s

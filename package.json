@@ -1,7 +1,7 @@
 {
 	"name": "avion",
 	"description": "Fast and easy file transfer without the NSA.",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"keywords": [
 		"avion",
 		"transfer",
@@ -15,13 +15,6 @@
 	"issues": "https://github.com/derhuerst/avion/issues",
 	"license": "ISC",
 	"dependencies": {
-		"component-emitter": "^1.2.1",
-		"file-saver": "^1.3.3",
-		"lodash.every": "^4.6.0",
-		"lodash.find": "^4.6.0",
-		"shorthash": "^0.0.2",
-		"signalhub": "^4.8.0",
-		"simple-peer": "^8.1.0"
 	},
 	"devDependencies": {
 		"browserify": "^14.1.0",

@@ -8,6 +8,7 @@ const createElement = require('virtual-dom/create-element')
 
 const render = require('./lib/ui')
 const fileReader = require('./lib/file-reader')
+const writeFile = require('./lib/write-file')
 const connect = require('./lib/connect')
 const notify = require('./lib/notify')
 const pling = require('./lib/pling')
@@ -33,11 +34,10 @@ const addFilesToEndpoint = (files) => {
 }
 
 const onFile = (file, isIncoming = false) => {
+	if (isIncoming) writeFile(file)
+
 	file.on('start', rerender)
-	file.on('data', (chunk) => {
-		// todo: handle chunk
-		rerender()
-	})
+	file.on('data', rerender)
 	file.on('end', () => {
 		pling()
 		rerender()

@@ -1,6 +1,7 @@
 'use strict'
 
 const generateId = require('alphanumeric-id')
+const Peer = require('simple-peer')
 const createEndpoint = require('files-sync-stream')
 const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
@@ -37,7 +38,11 @@ const onFile = (file, isIncoming = false) => {
 	if (isIncoming) writeFile(file)
 
 	file.on('start', rerender)
-	file.on('data', rerender)
+	file.on('progress', rerender)
+	file.on('error', (err) => {
+		notify('error', err.message || err.toString())
+		rerender()
+	})
 	file.on('end', () => {
 		pling()
 		rerender()
@@ -45,16 +50,17 @@ const onFile = (file, isIncoming = false) => {
 }
 
 const init = () => {
+	if (!Peer.WEBRTC_SUPPORT) return notify('error', 'Your browser is not supported.')
+
 	const d = connect(state.id, 'data', state.isLeader)
 	const s = connect(state.id, 'signaling', state.isLeader)
 
 	const onConnect = () => {
-		if (d.connected && s.connected) {
-			d.removeListener('connect', onConnect)
-			s.removeListener('connect', onConnect)
-		}
+		if (!d.connected || !s.connected) return
+		d.removeListener('connect', onConnect)
+		s.removeListener('connect', onConnect)
 
-		const endpoint = createEndpoint(d, s, state.isLeader)
+		const endpoint = createEndpoint(d, s, state.isLeader, 100 * 1000)
 		state.endpoint = endpoint
 
 		addFilesToEndpoint(state.filesToAdd)

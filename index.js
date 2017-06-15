@@ -12,7 +12,9 @@ const fileReader = require('./lib/file-reader')
 const writeFile = require('./lib/write-file')
 const connect = require('./lib/connect')
 const notify = require('./lib/notify')
-const pling = require('./lib/pling')
+const audio = require('./lib/audio')
+
+if (!Peer.WEBRTC_SUPPORT) notify('error', 'Your browser is not supported.')
 
 const state = {
 	id: location.hash.length === 7 ? location.hash.slice(1) : generateId(6),
@@ -38,20 +40,22 @@ const onFile = (file, isIncoming = false) => {
 	if (isIncoming) writeFile(file)
 
 	file.on('start', rerender)
-	file.on('progress', rerender)
+	file.on('progress', () => {
+		audio.progress()
+		rerender()
+	})
 	file.on('error', (err) => {
+		console.log(err)
 		notify('error', err.message || err.toString())
 		rerender()
 	})
 	file.on('end', () => {
-		pling()
+		audio.success()
 		rerender()
 	})
 }
 
 const init = () => {
-	if (!Peer.WEBRTC_SUPPORT) return notify('error', 'Your browser is not supported.')
-
 	const d = connect(state.id, 'data', state.isLeader)
 	const s = connect(state.id, 'signaling', state.isLeader)
 
@@ -93,6 +97,12 @@ const init = () => {
 }
 
 const addFiles = (files) => {
+	for (let file of files) {
+		if (file.size > 10 * 1000 * 1000) {
+			notify('warning', file.name + ' – Large files may not work!')
+		}
+	}
+
 	if (state.endpoint) addFilesToEndpoint(files)
 	else state.filesToAdd.push(...files)
 

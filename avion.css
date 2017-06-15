@@ -35,6 +35,7 @@ input:focus { outline: .1rem dotted #56b7f8 }
 	text-align: center; background-color: #eee;
 }
 .notification.error { color: white; background-color: #c0392b }
+.notification.warning { color: white; background-color: #f39c12 }
 .notification.hint { color: white; background-color: #27ae60 }
 
 #logo img { max-width: 12rem }

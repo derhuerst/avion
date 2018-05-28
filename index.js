@@ -1,7 +1,7 @@
 'use strict'
 
 const generateId = require('alphanumeric-id')
-const Peer = require('simple-peer')
+const {WEBRTC_SUPPORT} = require('simple-peer')
 const createEndpoint = require('files-sync-stream')
 const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
@@ -14,7 +14,7 @@ const connect = require('./lib/connect')
 const notify = require('./lib/notify')
 const audio = require('./lib/audio')
 
-if (!Peer.WEBRTC_SUPPORT) notify('error', 'Your browser is not supported.')
+if (!WEBRTC_SUPPORT) notify('error', 'Your browser is not supported.')
 
 const state = {
 	id: location.hash.length === 7 ? location.hash.slice(1) : generateId(6),

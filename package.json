@@ -21,14 +21,14 @@
 		"file-saver": "^1.3.3",
 		"files-sync-stream": "^0.3.0",
 		"signalhub": "^4.8.0",
-		"simple-peer": "^8.1.0",
+		"simple-peer": "^9.1.2",
 		"virtual-dom": "^2.1.1"
 	},
 	"devDependencies": {
 		"babel-core": "^6.26.0",
 		"babel-preset-env": "^1.6.0",
 		"babelify": "^8.0.0",
-		"browserify": "^15.2.0",
+		"browserify": "^16.2.2",
 		"uglify-es": "^3.0.12",
 		"wzrd": "^1.5.0"
 	},

@@ -1,4 +1,4 @@
-# [avion](http://avion.jannisr.de)
+# [avion](https://avion.jannisr.de)
 
 **Dead simple file sharing with WebRTC.**
 
@@ -6,6 +6,7 @@
 [![dependency status](https://img.shields.io/david/derhuerst/avion.svg)](https://david-dm.org/derhuerst/avion)
 [![dev dependency status](https://img.shields.io/david/dev/derhuerst/avion.svg)](https://david-dm.org/derhuerst/avion#info=devDependencies)
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/avion.svg)
+[![support me on Patreon](https://img.shields.io/badge/support%20me-on%20patreon-fa7664.svg)](https://patreon.com/derhuerst)
 
 
 ## Contributing

@@ -56,44 +56,48 @@ const onFile = (file, isIncoming = false) => {
 }
 
 const init = () => {
-	const d = connect(state.id, 'data', state.isLeader)
-	const s = connect(state.id, 'signaling', state.isLeader)
+	return Promise.all([
+		connect(state.id, 'data', state.isLeader),
+		connect(state.id, 'signaling', state.isLeader)
+	])
+	.then(([d, s]) => {
+		const onConnect = () => {
+			if (!d.connected || !s.connected) return
+			d.removeListener('connect', onConnect)
+			s.removeListener('connect', onConnect)
 
-	const onConnect = () => {
-		if (!d.connected || !s.connected) return
-		d.removeListener('connect', onConnect)
-		s.removeListener('connect', onConnect)
+			const endpoint = createEndpoint(d, s, state.isLeader, 100 * 1000)
+			state.endpoint = endpoint
 
-		const endpoint = createEndpoint(d, s, state.isLeader, 100 * 1000)
-		state.endpoint = endpoint
+			addFilesToEndpoint(state.filesToAdd)
+			endpoint.on('file', (file) => {
+				onFile(file, true)
+				rerender()
+			})
+			endpoint.on('done', rerender)
 
-		addFilesToEndpoint(state.filesToAdd)
-		endpoint.on('file', (file) => {
-			onFile(file, true)
+			notify('hint', 'You are connected.')
 			rerender()
-		})
-		endpoint.on('done', rerender)
+		}
+		d.on('connect', onConnect)
+		s.on('connect', onConnect)
 
-		notify('hint', 'You are connected.')
+		const onClose = () => {
+			// todo: handle disconnects properly
+			notify('hint', 'You are disconnected.')
+		}
+		d.on('close', onClose)
+		s.on('close', onClose)
+
+		const onError = (err) => notify('error', err.message || err.toString())
+		d.on('error', onError)
+		s.on('error', onError)
+
+		state.dataPeer = d
+		state.signalingPeer = s
 		rerender()
-	}
-	d.on('connect', onConnect)
-	s.on('connect', onConnect)
-
-	const onClose = () => {
-		// todo: handle disconnects properly
-		notify('hint', 'You are disconnected.')
-	}
-	d.on('close', onClose)
-	s.on('close', onClose)
-
-	const onError = (err) => notify('error', err.message || err.toString())
-	d.on('error', onError)
-	s.on('error', onError)
-
-	state.dataPeer = d
-	state.signalingPeer = s
-	rerender()
+	})
+	// todo: render pending state
 }
 
 const addFiles = (files) => {
@@ -121,4 +125,5 @@ const rerender = () => {
 	tree = newTree
 }
 
-setTimeout(init, 0)
+init()
+.catch(console.error)

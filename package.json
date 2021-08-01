@@ -18,7 +18,7 @@
 	"dependencies": {
 		"alphanumeric-id": "^1.0.1",
 		"blob-to-buffer": "^1.2.6",
-		"buffer-to-arraybuffer": "^0.0.5",
+		"buffer-to-arraybuffer": "^0.0.6",
 		"file-saver": "^2.0.0",
 		"files-sync-stream": "^0.3.0",
 		"signalhub": "^4.8.0",
